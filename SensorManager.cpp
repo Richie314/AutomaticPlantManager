@@ -88,3 +88,21 @@ bool MoistureSensor::CalibrateFromCurrentValue(const float16* oldData, size_t da
   return true;
 }
 
+unsigned long UltrasonicSensor::RawRead() const
+{
+    digitalWrite(m_Trig, LOW);
+    delayMicroseconds(2U);
+    digitalWrite(m_Trig, HIGH);
+    delayMicroseconds(10U);
+    digitalWrite(m_Trig, LOW);
+    return pulseIn(m_Echo, HIGH);
+}
+UltrasonicSensor::UltrasonicSensor(const uint8_t Trig, const uint8_t Echo) : m_Trig(Trig), m_Echo(Echo) 
+{
+  if (Good())
+  {
+    pinMode(m_Trig, OUTPUT);
+    pinMode(m_Echo, INPUT); 
+  } 
+};
+
